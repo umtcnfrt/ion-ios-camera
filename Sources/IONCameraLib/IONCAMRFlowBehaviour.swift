@@ -273,7 +273,8 @@ extension IONCAMRFlowBehaviour {
                 if options.returnMetadata {
                     Task {
                         let metadata = try? await self.metadataGetter.getVideoMetadata(from: url)
-                        let result = IONCAMRMediaResult(videoWith: url.absoluteString, data, and: metadata, saved: saved)
+                        let isSaved = saved
+                        let result = IONCAMRMediaResult(videoWith: url.absoluteString, data, and: metadata, saved: isSaved)
                         completion(result)
                     }
                 } else {
