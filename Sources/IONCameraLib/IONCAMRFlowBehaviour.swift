@@ -266,6 +266,7 @@ extension IONCAMRFlowBehaviour {
             if options.saveToGallery {
                 saved = await self.galleryBehaviour.saveToGallery(url)
             }
+            let isSaved = saved
             thumbnailGenerator.getImage(from: url) { image in
                 guard let image, let data = image.defaultVideoThumbnailData
                 else { return completion(nil) }
@@ -273,12 +274,11 @@ extension IONCAMRFlowBehaviour {
                 if options.returnMetadata {
                     Task {
                         let metadata = try? await self.metadataGetter.getVideoMetadata(from: url)
-                        let isSaved = saved
                         let result = IONCAMRMediaResult(videoWith: url.absoluteString, data, and: metadata, saved: isSaved)
                         completion(result)
                     }
                 } else {
-                    let result = IONCAMRMediaResult(videoWith: url.absoluteString, data, saved: saved)
+                    let result = IONCAMRMediaResult(videoWith: url.absoluteString, data, saved: isSaved)
                     completion(result)
                 }
             }
